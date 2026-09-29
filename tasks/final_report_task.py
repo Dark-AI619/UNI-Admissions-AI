@@ -1,6 +1,22 @@
 from crewai import Task
 
 def create_final_report_task(agent, student_profile: str, context) -> Task:
-    return Task(description=f"""Create a final admissions decision-support report for:
+    return Task(
+        description=f"""Review the analyst's output for this applicant:
 {student_profile}
-Use sections: Admissions Overview; Recommended Programs; Programs With Blocking Requirements; Scholarship Opportunities; Missing Applicant Information; Next Actions; Verification Note. For each program show eligibility, met/missing requirements, funding, deadline and official sources. Do not add unsupported facts. Explain conflicts. State that screening is not an admission guarantee.""", expected_output="A clear Markdown admissions report with official sources and next actions.", agent=agent, context=context)
+
+Return a concise final report containing:
+- Best-fit programs
+- Eligibility / missing requirements
+- Scholarship or funding notes
+- Verified deadlines
+- Official source URLs
+- 3 to 5 next actions
+
+Do not repeat long evidence snippets and do not add unsupported facts.
+If evidence is weak or conflicting, state that clearly.
+State that this is decision support, not an admission guarantee.""",
+        expected_output="A concise Markdown admissions report with sources and next actions.",
+        agent=agent,
+        context=context,
+    )
