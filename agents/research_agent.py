@@ -1,21 +1,19 @@
 from crewai import Agent
 from config.llm import build_llm
-from tools.web_search import build_web_search_tool
 from utils.formatting import require_sources_instruction
 
 def create_research_agent() -> Agent:
     return Agent(
         role="University Research Agent",
         goal=(
-            "Find current degree programs and official admissions information that match the student profile. "
+            "Analyze supplied live search evidence to identify relevant degree programs and admissions information. "
             + require_sources_instruction()
         ),
         backstory=(
-            "You are a meticulous international admissions researcher. You focus on current official sources, "
-            "program pages and admissions offices. You never fabricate thresholds, deadlines, tuition or eligibility rules."
+            "You are a meticulous international admissions researcher. You work only from the live search evidence "
+            "supplied in the task plus the applicant profile. You never fabricate thresholds, deadlines, tuition or eligibility rules."
         ),
         llm=build_llm(),
-        tools=[build_web_search_tool()],
         verbose=True,
         allow_delegation=False,
     )
