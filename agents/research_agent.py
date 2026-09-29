@@ -1,5 +1,6 @@
 from crewai import Agent
 from config.llm import build_llm
+from tools.web_search import build_web_search_tool
 from utils.formatting import require_sources_instruction
 
 def create_research_agent() -> Agent:
@@ -14,6 +15,7 @@ def create_research_agent() -> Agent:
             "program pages and admissions offices. You never fabricate thresholds, deadlines, tuition or eligibility rules."
         ),
         llm=build_llm(),
+        tools=[build_web_search_tool()],
         verbose=True,
         allow_delegation=False,
     )
