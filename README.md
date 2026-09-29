@@ -13,7 +13,7 @@ The system uses six specialist agents:
 5. Scholarship Agent
 6. Admissions Supervisor Agent
 
-The agents research current admissions information, extract requirements, compare them with the applicant profile, find relevant scholarships/programs and produce a final sourced report.
+The Research and Scholarship agents use live web search. The other agents reason only over researched evidence.
 
 ## Architecture
 
@@ -22,7 +22,8 @@ The agents research current admissions information, extract requirements, compar
 - `tasks/` — one file per CrewAI task
 - `crew/` — orchestration
 - `models/` — Pydantic data models
-- `services/` — Groq configuration and deterministic eligibility helpers
+- `services/` — Groq and deterministic eligibility helpers
+- `tools/` — reusable web research tools
 - `utils/` — formatting helpers
 
 ## Deploy on Streamlit Community Cloud
@@ -35,11 +36,12 @@ The agents research current admissions information, extract requirements, compar
 
 ```toml
 GROQ_API_KEY = "your-real-groq-api-key"
+SERPER_API_KEY = "your-serper-api-key"
 ```
 
 6. Deploy.
 
-Do not commit a real `.streamlit/secrets.toml` file.
+Do not commit real secrets.
 
 ## Model
 
@@ -51,4 +53,4 @@ openai/gpt-oss-120b
 
 ## Reliability rule
 
-The agents are explicitly instructed not to invent admission requirements. Unknown or unverified requirements must be reported as unknown. Final recommendations should preserve source URLs and distinguish verified requirements from interpretation.
+The agents are instructed not to invent admission requirements. Unknown or unverified requirements must be reported as UNKNOWN. Final recommendations preserve source URLs and distinguish verified facts from interpretation.
