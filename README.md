@@ -13,18 +13,7 @@ The system uses six specialist agents:
 5. Scholarship Agent
 6. Admissions Supervisor Agent
 
-The Research and Scholarship agents use live web search. The other agents reason only over researched evidence.
-
-## Architecture
-
-- `streamlit_app.py` — Streamlit UI
-- `agents/` — one file per agent
-- `tasks/` — one file per CrewAI task
-- `crew/` — orchestration
-- `models/` — Pydantic data models
-- `services/` — Groq and deterministic eligibility helpers
-- `tools/` — reusable web research tools
-- `utils/` — formatting helpers
+Live admissions search is performed through Serper before CrewAI starts. The agents then reason over that retrieved evidence.
 
 ## Deploy on Streamlit Community Cloud
 
@@ -42,17 +31,15 @@ SERPER_API_KEY = "your-serper-api-key"
 
 7. Deploy.
 
-The repository also includes `runtime.txt` pinned to Python 3.12 to avoid CrewAI/ChromaDB/Pydantic incompatibilities seen under Python 3.14.
-
-Do not commit real secrets.
-
 ## Model
 
 Default Groq model:
 
 ```
-openai/gpt-oss-120b
+qwen/qwen3.8-27b
 ```
+
+Agent responses are capped and the orchestration retries temporary Groq rate-limit failures.
 
 ## Reliability rule
 
