@@ -32,14 +32,17 @@ The Research and Scholarship agents use live web search. The other agents reason
 2. Create a new app from this GitHub repository.
 3. Select branch `main`.
 4. Entrypoint: `streamlit_app.py`.
-5. In **Advanced settings → Secrets**, add:
+5. Use **Python 3.12** in Advanced settings.
+6. In **Advanced settings → Secrets**, add:
 
 ```toml
 GROQ_API_KEY = "your-real-groq-api-key"
 SERPER_API_KEY = "your-serper-api-key"
 ```
 
-6. Deploy.
+7. Deploy.
+
+The repository also includes `runtime.txt` pinned to Python 3.12 to avoid CrewAI/ChromaDB/Pydantic incompatibilities seen under Python 3.14.
 
 Do not commit real secrets.
 
