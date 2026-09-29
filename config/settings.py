@@ -4,7 +4,7 @@ from dataclasses import dataclass
 @dataclass(frozen=True)
 class Settings:
     groq_api_key: str
-    groq_model: str = "groq/qwen/qwen3.8-27b"
+    groq_model: str = "groq/openai/gpt-oss-120b"
 
 def get_settings() -> Settings:
     api_key = os.getenv("GROQ_API_KEY", "").strip()
