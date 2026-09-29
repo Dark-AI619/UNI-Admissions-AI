@@ -1,3 +1,4 @@
+import time
 from crewai import Crew, Process
 from agents.research_agent import create_research_agent
 from agents.requirements_agent import create_requirements_agent
@@ -40,5 +41,16 @@ def build_admissions_crew(profile: StudentProfile) -> Crew:
     )
 
 def run_admissions_crew(profile: StudentProfile) -> str:
-    result = build_admissions_crew(profile).kickoff()
-    return getattr(result, "raw", None) or str(result)
+    last_error = None
+    for attempt in range(3):
+        try:
+            result = build_admissions_crew(profile).kickoff()
+            return getattr(result, "raw", None) or str(result)
+        except Exception as exc:
+            last_error = exc
+            text = str(exc).lower()
+            if "rate limit" not in text and "rate_limit" not in text and "429" not in text:
+                raise
+            if attempt < 2:
+                time.sleep(6 * (attempt + 1))
+    raise last_error
