@@ -1,7 +1,7 @@
 streamlit>=1.42,<2
-crewai>=0.130
-crewai-tools>=0.47
-groq>=0.31
-litellm>=1.70
+crewai>=0.130,<1
+crewai-tools>=0.47,<1
+groq>=0.31,<1
+litellm>=1.70,<2
 pydantic>=2.10,<3
-python-dotenv>=1.0
+python-dotenv>=1.0,<2
