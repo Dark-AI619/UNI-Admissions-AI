@@ -12,19 +12,33 @@ from tasks.recommendation_task import create_recommendation_task
 from tasks.scholarship_task import create_scholarship_task
 from tasks.final_report_task import create_final_report_task
 from models.student_profile import StudentProfile
+from services.web_search_service import build_admissions_research
 
 def build_admissions_crew(profile: StudentProfile) -> Crew:
-    p=profile.to_prompt()
-    a1=create_research_agent(); a2=create_requirements_agent(); a3=create_eligibility_agent()
-    a4=create_recommendation_agent(); a5=create_scholarship_agent(); a6=create_supervisor_agent()
-    t1=create_research_task(a1,p)
-    t2=create_requirements_task(a2,[t1])
-    t3=create_eligibility_task(a3,p,[t2])
-    t4=create_recommendation_task(a4,p,[t1,t2,t3])
-    t5=create_scholarship_task(a5,p,[t1,t2,t3])
-    t6=create_final_report_task(a6,p,[t1,t2,t3,t4,t5])
-    return Crew(agents=[a1,a2,a3,a4,a5,a6], tasks=[t1,t2,t3,t4,t5,t6], process=Process.sequential, verbose=True)
+    p = profile.to_prompt()
+    live_evidence = build_admissions_research(p)
+
+    a1 = create_research_agent()
+    a2 = create_requirements_agent()
+    a3 = create_eligibility_agent()
+    a4 = create_recommendation_agent()
+    a5 = create_scholarship_agent()
+    a6 = create_supervisor_agent()
+
+    t1 = create_research_task(a1, p, live_evidence)
+    t2 = create_requirements_task(a2, [t1])
+    t3 = create_eligibility_task(a3, p, [t2])
+    t4 = create_recommendation_task(a4, p, [t1, t2, t3])
+    t5 = create_scholarship_task(a5, p, [t1, t2, t3])
+    t6 = create_final_report_task(a6, p, [t1, t2, t3, t4, t5])
+
+    return Crew(
+        agents=[a1, a2, a3, a4, a5, a6],
+        tasks=[t1, t2, t3, t4, t5, t6],
+        process=Process.sequential,
+        verbose=True,
+    )
 
 def run_admissions_crew(profile: StudentProfile) -> str:
-    result=build_admissions_crew(profile).kickoff()
-    return getattr(result,"raw",None) or str(result)
+    result = build_admissions_crew(profile).kickoff()
+    return getattr(result, "raw", None) or str(result)
