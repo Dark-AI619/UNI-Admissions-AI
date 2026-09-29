@@ -1,21 +1,19 @@
 from crewai import Agent
 from config.llm import build_llm
-from tools.web_search import build_web_search_tool
 from utils.formatting import require_sources_instruction
 
 def create_scholarship_agent() -> Agent:
     return Agent(
         role="Scholarship Agent",
         goal=(
-            "Find current scholarships, tuition waivers and funding attached to the researched programs, and compare "
-            "verified scholarship requirements with the student profile. " + require_sources_instruction()
+            "Analyze supplied live search evidence for scholarships, tuition waivers and funding attached to researched programs. "
+            + require_sources_instruction()
         ),
         backstory=(
-            "You are a funding researcher for international students. You distinguish university scholarships, "
-            "government funding and automatic tuition awards, and report separate scholarship deadlines when applicable."
+            "You are a funding researcher for international students. You only use the supplied evidence and prior task context, "
+            "distinguish funding types, and never invent coverage, deadlines or criteria."
         ),
         llm=build_llm(),
-        tools=[build_web_search_tool()],
         verbose=True,
         allow_delegation=False,
     )
