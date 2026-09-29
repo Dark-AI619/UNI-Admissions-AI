@@ -4,14 +4,17 @@ from utils.formatting import require_sources_instruction
 
 def create_research_agent() -> Agent:
     return Agent(
-        role="University Research Agent",
+        role="Admissions Analyst",
         goal=(
-            "Analyze supplied live search evidence to identify relevant degree programs and admissions information. "
+            "Analyze the supplied live search evidence and applicant profile in one pass. "
+            "Identify relevant programs, extract the key verified admission requirements, "
+            "estimate fit, and note scholarship information when present. "
             + require_sources_instruction()
         ),
         backstory=(
-            "You are a meticulous international admissions researcher. You work only from the live search evidence "
-            "supplied in the task plus the applicant profile. You never fabricate thresholds, deadlines, tuition or eligibility rules."
+            "You are an evidence-first international admissions analyst. "
+            "You combine research, requirements extraction, program matching and preliminary "
+            "eligibility screening without inventing facts."
         ),
         llm=build_llm(),
         verbose=True,
